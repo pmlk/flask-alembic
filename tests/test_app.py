@@ -18,6 +18,14 @@ def test_get_users(client: FlaskClient, db_session: Session):
     assert json.loads(response.data) == {"users": [{"name": username}]}
 
 
+def test_add_user(client: FlaskClient, db_session: Session):
+    username = "foo"
+
+    client.get(f"/users/add/{username}")
+    users = db_users.get_users(db_session)
+    assert any(username == user.name for user in users)
+
+
 @pytest.fixture
 def client() -> FlaskClient:
     return flask_app.test_client()

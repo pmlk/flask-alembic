@@ -27,3 +27,11 @@ def get_users():
     user_dicts = list(map(lambda user: {"name": user.name}, users))
 
     return {"users": user_dicts}
+
+
+@flask_app.route("/users/add/<name>")
+def add_user(name: str):
+    with _db_session() as session:
+        db_users.add_user(session, name)
+
+    return "OK"
